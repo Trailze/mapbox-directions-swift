@@ -1,0 +1,278 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.1 (swiftlang-1200.0.41 clang-1200.0.32.8)
+// swift-module-flags: -target x86_64-apple-ios10.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Turf
+import CoreLocation
+import Foundation
+import Swift
+@_exported import Turf
+public struct MultiPoint : Swift.Equatable {
+  public var coordinates: [CoreLocation.CLLocationCoordinate2D]
+  public init(_ coordinates: [CoreLocation.CLLocationCoordinate2D])
+  public static func == (a: Turf.MultiPoint, b: Turf.MultiPoint) -> Swift.Bool
+}
+public typealias LineSegment = (CoreLocation.CLLocationCoordinate2D, CoreLocation.CLLocationCoordinate2D)
+public func intersection(_ line1: Turf.LineSegment, _ line2: Turf.LineSegment) -> CoreLocation.CLLocationCoordinate2D?
+public func mid(_ coord1: CoreLocation.CLLocationCoordinate2D, _ coord2: CoreLocation.CLLocationCoordinate2D) -> CoreLocation.CLLocationCoordinate2D
+public struct MultiLineString : Swift.Equatable {
+  public var coordinates: [[CoreLocation.CLLocationCoordinate2D]]
+  public init(_ coordinates: [[CoreLocation.CLLocationCoordinate2D]])
+  public init(_ polygon: Turf.Polygon)
+  public static func == (a: Turf.MultiLineString, b: Turf.MultiLineString) -> Swift.Bool
+}
+public enum Number : Swift.Equatable {
+  case int(Swift.Int)
+  case double(Swift.Double)
+  public var value: Any? {
+    get
+  }
+  public static func == (a: Turf.Number, b: Turf.Number) -> Swift.Bool
+}
+extension Number : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public enum FeatureIdentifier {
+  case string(Swift.String)
+  case number(Turf.Number)
+  public var value: Any? {
+    get
+  }
+}
+extension FeatureIdentifier : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+extension Double {
+  public func wrap(min minimumValue: CoreLocation.CLLocationDirection, max maximumValue: CoreLocation.CLLocationDirection) -> CoreLocation.CLLocationDirection
+}
+extension Double {
+  public func toRadians() -> Turf.LocationRadians
+  public func toDegrees() -> CoreLocation.CLLocationDirection
+}
+extension Double {
+  public func difference(from beta: CoreLocation.CLLocationDirection) -> CoreLocation.CLLocationDirection
+}
+extension CLLocationCoordinate2D : Swift.Equatable {
+  public init(_ radianCoordinate: Turf.RadianCoordinate2D)
+  public static func == (lhs: CoreLocation.CLLocationCoordinate2D, rhs: CoreLocation.CLLocationCoordinate2D) -> Swift.Bool
+  public func direction(to coordinate: CoreLocation.CLLocationCoordinate2D) -> CoreLocation.CLLocationDirection
+  public func coordinate(at distance: CoreLocation.CLLocationDistance, facing direction: CoreLocation.CLLocationDirection) -> CoreLocation.CLLocationCoordinate2D
+  public func distance(to coordinate: CoreLocation.CLLocationCoordinate2D) -> CoreLocation.CLLocationDistance
+}
+public struct GeometryCollection {
+  public var geometries: [Turf.Geometry]
+  public init(geometries: [Turf.Geometry])
+  public init(_ multiPolygon: Turf.MultiPolygon)
+}
+public typealias LocationRadians = Swift.Double
+public typealias RadianDistance = Swift.Double
+public typealias RadianDirection = Swift.Double
+public struct RadianCoordinate2D {
+  public init(latitude: Turf.LocationRadians, longitude: Turf.LocationRadians)
+  public init(_ degreeCoordinate: CoreLocation.CLLocationCoordinate2D)
+  public func direction(to coordinate: Turf.RadianCoordinate2D) -> Turf.RadianDirection
+  public func coordinate(at distance: Turf.RadianDistance, facing direction: Turf.RadianDirection) -> Turf.RadianCoordinate2D
+  public func distance(to coordinate: Turf.RadianCoordinate2D) -> Turf.RadianDistance
+}
+public struct Feature : Turf.GeoJSONObject {
+  public var type: Turf.FeatureType
+  public var identifier: Turf.FeatureIdentifier?
+  public var properties: [Swift.String : Any?]?
+  public var geometry: Turf.Geometry
+  public init(geometry: Turf.Geometry)
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct FeatureCollection : Turf.GeoJSONObject {
+  public let type: Turf.FeatureType
+  public var identifier: Turf.FeatureIdentifier?
+  public var features: [Turf.Feature]
+  public var properties: [Swift.String : Any?]?
+  public init(features: [Turf.Feature])
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct MultiPolygon : Swift.Equatable {
+  public var coordinates: [[[CoreLocation.CLLocationCoordinate2D]]]
+  public init(_ coordinates: [[[CoreLocation.CLLocationCoordinate2D]]])
+  public init(_ polygons: [Turf.Polygon])
+  public static func == (a: Turf.MultiPolygon, b: Turf.MultiPolygon) -> Swift.Bool
+}
+extension MultiPolygon {
+  public var polygons: [Turf.Polygon] {
+    get
+  }
+  public func contains(_ coordinate: CoreLocation.CLLocationCoordinate2D, ignoreBoundary: Swift.Bool = false) -> Swift.Bool
+}
+@frozen public struct LineString : Swift.Equatable {
+  public var coordinates: [CoreLocation.CLLocationCoordinate2D]
+  public init(_ coordinates: [CoreLocation.CLLocationCoordinate2D])
+  public init(_ ring: Turf.Ring)
+  public static func == (a: Turf.LineString, b: Turf.LineString) -> Swift.Bool
+}
+extension LineString {
+  public func trimmed(from coordinate: CoreLocation.CLLocationCoordinate2D, distance: CoreLocation.CLLocationDistance) -> Turf.LineString?
+  public struct IndexedCoordinate {
+    public let coordinate: Swift.Array<CoreLocation.CLLocationCoordinate2D>.Element
+    public let index: Swift.Array<CoreLocation.CLLocationCoordinate2D>.Index
+    public let distance: CoreLocation.CLLocationDistance
+  }
+  public func coordinateFromStart(distance: CoreLocation.CLLocationDistance) -> CoreLocation.CLLocationCoordinate2D?
+  public func indexedCoordinateFromStart(distance: CoreLocation.CLLocationDistance) -> Turf.LineString.IndexedCoordinate?
+  public func distance(from start: CoreLocation.CLLocationCoordinate2D? = nil, to end: CoreLocation.CLLocationCoordinate2D? = nil) -> CoreLocation.CLLocationDistance?
+  public func sliced(from start: CoreLocation.CLLocationCoordinate2D? = nil, to end: CoreLocation.CLLocationCoordinate2D? = nil) -> Turf.LineString?
+  public func closestCoordinate(to coordinate: CoreLocation.CLLocationCoordinate2D) -> Turf.LineString.IndexedCoordinate?
+  public func simplify(tolerance: Swift.Double = 1.0, highestQuality: Swift.Bool = false) -> Turf.LineString
+  public mutating func simplified(tolerance: Swift.Double = 1.0, highestQuality: Swift.Bool = false)
+}
+public enum GeometryType : Swift.String, Swift.Codable, Swift.CaseIterable {
+  case Point
+  case LineString
+  case Polygon
+  case MultiPoint
+  case MultiLineString
+  case MultiPolygon
+  case GeometryCollection
+  public typealias RawValue = Swift.String
+  public init?(rawValue: Swift.String)
+  public var rawValue: Swift.String {
+    get
+  }
+  public typealias AllCases = [Turf.GeometryType]
+  public static var allCases: [Turf.GeometryType] {
+    get
+  }
+}
+public enum Geometry {
+  case point(_: Turf.Point)
+  case lineString(_: Turf.LineString)
+  case polygon(_: Turf.Polygon)
+  case multiPoint(_: Turf.MultiPoint)
+  case multiLineString(_: Turf.MultiLineString)
+  case multiPolygon(_: Turf.MultiPolygon)
+  case geometryCollection(_: Turf.GeometryCollection)
+  public var type: Turf.GeometryType {
+    get
+  }
+  public var value: Any? {
+    get
+  }
+}
+extension Geometry : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public struct Polygon : Swift.Equatable {
+  public var coordinates: [[CoreLocation.CLLocationCoordinate2D]]
+  public init(_ coordinates: [[CoreLocation.CLLocationCoordinate2D]])
+  public init(outerRing: Turf.Ring, innerRings: [Turf.Ring] = [])
+  public init(center: CoreLocation.CLLocationCoordinate2D, radius: CoreLocation.CLLocationDistance, vertices: Swift.Int)
+  public static func == (a: Turf.Polygon, b: Turf.Polygon) -> Swift.Bool
+}
+extension Polygon {
+  public var innerRings: [Turf.Ring] {
+    get
+  }
+  public var outerRing: Turf.Ring {
+    get
+  }
+  public var area: Swift.Double {
+    get
+  }
+  public func contains(_ coordinate: CoreLocation.CLLocationCoordinate2D, ignoreBoundary: Swift.Bool = false) -> Swift.Bool
+}
+public struct BoundingBox : Swift.Codable {
+  public init?(from coordinates: [CoreLocation.CLLocationCoordinate2D]?)
+  public init(_ southWest: CoreLocation.CLLocationCoordinate2D, _ northEast: CoreLocation.CLLocationCoordinate2D)
+  public func contains(_ coordinate: CoreLocation.CLLocationCoordinate2D, ignoreBoundary: Swift.Bool = true) -> Swift.Bool
+  public func encode(to encoder: Swift.Encoder) throws
+  public init(from decoder: Swift.Decoder) throws
+  public var southWest: CoreLocation.CLLocationCoordinate2D
+  public var northEast: CoreLocation.CLLocationCoordinate2D
+}
+public struct Point : Swift.Equatable {
+  public var coordinates: CoreLocation.CLLocationCoordinate2D
+  public init(_ coordinates: CoreLocation.CLLocationCoordinate2D)
+  public static func == (a: Turf.Point, b: Turf.Point) -> Swift.Bool
+}
+public struct Ring {
+  public var coordinates: [CoreLocation.CLLocationCoordinate2D]
+  public init(coordinates: [CoreLocation.CLLocationCoordinate2D])
+  public var area: Swift.Double {
+    get
+  }
+}
+extension Ring {
+  public func contains(_ coordinate: CoreLocation.CLLocationCoordinate2D, ignoreBoundary: Swift.Bool = false) -> Swift.Bool
+}
+extension KeyedDecodingContainer {
+  public func decode(_ type: [Swift.String : Any?].Type, forKey key: K) throws -> [Swift.String : Any?]
+  public func decodeIfPresent(_ type: [Swift.String : Any?].Type, forKey key: K) throws -> [Swift.String : Any?]?
+  public func decode(_ type: [Any?].Type, forKey key: K) throws -> [Any?]
+  public func decodeIfPresent(_ type: [Any?].Type, forKey key: K) throws -> [Any?]?
+  public func decode(_ type: [Swift.String : Any?].Type) throws -> [Swift.String : Any?]
+}
+extension UnkeyedDecodingContainer {
+  public mutating func decode(_ type: [Any?].Type) throws -> [Any?]
+  public mutating func decode(_ type: [Swift.String : Any?].Type) throws -> [Swift.String : Any?]
+}
+extension KeyedEncodingContainerProtocol {
+  public mutating func encodeIfPresent(_ value: [Swift.String : Any?]?, forKey key: Self.Key) throws
+  public mutating func encode(_ value: [Swift.String : Any?], forKey key: Self.Key) throws
+  public mutating func encodeIfPresent(_ value: [Any?]?, forKey key: Self.Key) throws
+  public mutating func encode(_ value: [Any?], forKey key: Self.Key) throws
+  public mutating func encode(_ value: [Swift.String : Any?]) throws
+}
+extension UnkeyedEncodingContainer {
+  public mutating func encode(_ value: [Swift.String : Any?]) throws
+  public mutating func encode(_ value: [Any?]) throws
+}
+extension Ring : Swift.Codable {
+  public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+}
+public enum FeatureType : Swift.String, Swift.Codable {
+  case feature
+  case featureCollection
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+  public init?(rawValue: Swift.String)
+}
+public protocol GeoJSONObject : Swift.Decodable, Swift.Encodable {
+  var type: Turf.FeatureType { get }
+  var identifier: Turf.FeatureIdentifier? { get set }
+  var properties: [Swift.String : Any?]? { get set }
+}
+public enum GeoJSONError : Swift.Error {
+  case unknownType
+  case noTypeFound
+  public static func == (a: Turf.GeoJSONError, b: Turf.GeoJSONError) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+public class GeoJSON : Swift.Codable {
+  public var decoded: Swift.Codable?
+  public var decodedFeature: Turf.Feature? {
+    get
+  }
+  public var decodedFeatureCollection: Turf.FeatureCollection? {
+    get
+  }
+  required public init(from decoder: Swift.Decoder) throws
+  public func encode(to encoder: Swift.Encoder) throws
+  public static func parse(_ data: Foundation.Data) throws -> Turf.GeoJSON
+  public static func parse<T>(_ type: T.Type, from data: Foundation.Data) throws -> T where T : Turf.GeoJSONObject
+  @objc deinit
+}
+extension Turf.GeometryType : Swift.Equatable {}
+extension Turf.GeometryType : Swift.Hashable {}
+extension Turf.GeometryType : Swift.RawRepresentable {}
+extension Turf.FeatureType : Swift.Equatable {}
+extension Turf.FeatureType : Swift.Hashable {}
+extension Turf.FeatureType : Swift.RawRepresentable {}
+extension Turf.GeoJSONError : Swift.Equatable {}
+extension Turf.GeoJSONError : Swift.Hashable {}
