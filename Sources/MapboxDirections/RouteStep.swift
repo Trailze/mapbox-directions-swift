@@ -68,7 +68,7 @@ public enum TransportType: String, Codable {
 
  To avoid a complex series of if-else-if statements or switch statements, use pattern matching with a single switch statement on a tuple that consists of the maneuver type and maneuver direction.
  */
-public enum ManeuverType: String, Codable {
+public enum ManeuverType: String, Codable, CaseIterable {
     /**
      The step requires the user to depart from a waypoint.
 
@@ -200,7 +200,7 @@ public enum ManeuverType: String, Codable {
 /**
  A `ManeuverDirection` clarifies a `ManeuverType` with directional information. The exact meaning of the maneuver direction for a given step depends on the step’s maneuver type; see the `ManeuverType` documentation for details.
  */
-public enum ManeuverDirection: String, Codable {
+public enum ManeuverDirection: String, Codable, CaseIterable {
     /**
      The maneuver requires a sharp turn to the right.
      */
