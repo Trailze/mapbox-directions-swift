@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
 
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   
-  s.source = { :git => "https://github.com/Trailze/mapbox-directions-swift.git", :commit => "6f317d608b224399c343a1a77d122ddd30613a6c" } # :tag => "trailze-v#{s.version.to_s}" }
+  s.source = { :git => "https://github.com/Trailze/mapbox-directions-swift.git", :tag => "trailze-v#{s.version.to_s}" } # :commit => "6f317d608b224399c343a1a77d122ddd30613a6c" } # 
   # s.source       = { :git => "https://github.com/mapbox/mapbox-directions-swift.git", :tag => "v#{s.version.to_s}" }
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
